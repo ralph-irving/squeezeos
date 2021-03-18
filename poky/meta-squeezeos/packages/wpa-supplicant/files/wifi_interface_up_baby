@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Keep the wireless interface scanning
+
+# After ifdown, the interface  may be left "down". This
+# will prevent wpa_supplicant > v0.7.2 from undertaking SCAN,
+# REASSOCIATE, and other wi-fi radio operations.
+
+if [ "$IFACE"x = eth1x ]; then
+	/bin/ip addr flush dev eth1 2>/dev/null
+	/bin/ip link set eth1 up
+fi

@@ -7,6 +7,10 @@ PR = "r0"
 SRC_URI = "http://w1.fi/releases/wpa_supplicant-${PV}.tar.gz \
 	   file://defconfig"
 
+SRC_URI_append_baby = " \
+	file://wifi_interface_up_baby \
+	"
+
 S = "${WORKDIR}/wpa_supplicant-${PV}/wpa_supplicant"
 
 # With the csl2010q1 and high optimization it fails. 'arm' instruction set to be safe
@@ -32,8 +36,14 @@ do_install() {
 	install -m 0755 ${S}/wpa_cli ${D}${sbindir}/wpa_cli
 }
 
+do_install_append_baby() {
+	# network script - ensure interface (eth1) is raised back 'up' after 'ifdown'
+	install -m 0755 -d ${D}${sysconfdir}/network/if-post-down.d
+	install -m 0755 ${WORKDIR}/wifi_interface_up_baby ${D}${sysconfdir}/network/if-post-down.d/wifi_interface_up
+}
+
 PACKAGES = "wpa-supplicant-dbg wpa-supplicant"
 
-FILES_wpa-supplicant = "${sbindir}"
+FILES_wpa-supplicant = "${sbindir} ${sysconfdir}"
 FILES_wpa-supplicant-dbg = "${sbindir}.debug"
 
