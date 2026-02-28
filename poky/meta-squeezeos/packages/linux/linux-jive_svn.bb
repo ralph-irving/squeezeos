@@ -4,7 +4,7 @@ LICENSE = "GPL"
 
 LINUX_VERSION = "2.6.22"
 PV = "${LINUX_VERSION}+${DISTRO_VERSION}+svnr${SRCREV}"
-PR = "r4"
+PR = "r5"
 
 inherit kernel
 

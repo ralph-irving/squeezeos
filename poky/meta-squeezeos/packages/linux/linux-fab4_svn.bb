@@ -5,7 +5,7 @@ LICENSE = "GPL"
 LINUX_ARCH = imx35
 LINUX_VERSION = "2.6.26"
 PV = "${LINUX_VERSION}+${DISTRO_VERSION}+svnr${SRCREV}"
-PR = "r14"
+PR = "r15"
 
 inherit kernel
 
@@ -23,8 +23,8 @@ COMPATIBLE_MACHINE = "(fab4)"
 # to simply apply the patchset using quilt.
 do_patch() {
 # For a normal release build:
-	cp -r ${WORKDIR}/${LINUX_ARCH}/patches ${S}
-	#cp -r /home/ralphy/source/squeezeos/src/imx35/patches ${S}
+	#cp -r ${WORKDIR}/${LINUX_ARCH}/patches ${S}
+	cp -r /home/ralphy/source/squeezeos/src/imx35/patches ${S}
 	cd ${S}
 
 # Uncomment these 4 lines for oprofile-able image, and comment above 2 lines

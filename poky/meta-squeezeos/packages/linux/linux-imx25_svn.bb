@@ -5,7 +5,7 @@ LICENSE = "GPL"
 LINUX_ARCH = imx25
 LINUX_VERSION = "2.6.26"
 PV = "${LINUX_VERSION}+${DISTRO_VERSION}+svnr${SRCREV}"
-PR = "r10"
+PR = "r11"
 
 
 inherit kernel
@@ -23,8 +23,8 @@ COMPATIBLE_MACHINE = "(baby)"
 # the kernel patches are managed by quilt, and checked into svn. modify patch
 # to simply apply the patchset using quilt.
 do_patch() {
-	cp -rf ${WORKDIR}/${LINUX_ARCH}/patches ${S}
-	#cp -rf /home/ralphy/source/squeezeos/src/imx25/patches ${S}
+	#cp -rf ${WORKDIR}/${LINUX_ARCH}/patches ${S}
+	cp -rf /home/ralphy/source/squeezeos/src/imx25/patches ${S}
 	cd ${S}
 	quilt push -a
 }
