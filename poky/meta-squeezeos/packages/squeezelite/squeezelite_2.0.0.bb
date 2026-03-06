@@ -36,7 +36,6 @@ SRC_URI="${RALPHY_SQUEEZEOS}/${PN}-${PV}-${PR}.tar.gz \
 	file://updateconfig \
 	file://initd \
 	file://Makefile.squeezeos \
-	file://SetupSqueezelite \
 "
 
 SRC_URI_append_baby = " \
@@ -80,13 +79,6 @@ do_install() {
         install -m 0755 ${S}/../updateconfig ${D}/etc/squeezelite
         install -m 0755 -d ${D}/etc/init.d
         install -m 0755 ${S}/../initd ${D}/etc/init.d/${PN}
-
-        # Settings applet
-        install -m 0755 -d ${D}${datadir}/jive/applets/SetupSqueezelite
-        install -m 0644 ${WORKDIR}/SetupSqueezelite/SetupSqueezeliteApplet.lua ${D}${datadir}/jive/applets/SetupSqueezelite/SetupSqueezeliteApplet.lua
-        install -m 0644 ${WORKDIR}/SetupSqueezelite/SetupSqueezeliteMeta.lua ${D}${datadir}/jive/applets/SetupSqueezelite/SetupSqueezeliteMeta.lua
-        install -m 0644 ${WORKDIR}/SetupSqueezelite/loadPriority.lua ${D}${datadir}/jive/applets/SetupSqueezelite/loadPriority.lua
-        install -m 0644 ${WORKDIR}/SetupSqueezelite/strings.txt ${D}${datadir}/jive/applets/SetupSqueezelite/strings.txt
 }
 
 do_install_append_baby() {
