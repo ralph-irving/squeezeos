@@ -3,6 +3,12 @@
 PIDFILE=/var/run/squeezelite.pid
 CONFIG=/etc/squeezelite/config
 
+get_laa_mac_address() {
+	# MAC address of player converted to upper case locally administered MAC address.
+	# x2:xx:xx:xx:xx:xx x6:xx:xx:xx:xx:xx xA:xx:xx:xx:xx:xx xE:xx:xx:xx:xx:xx
+	/sbin/ifconfig eth0 2>&1 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' | sed 's/[0-9A-Fa-f]:/E:/' | tr '[a-z]' '[A-Z]'
+}
+
 if [ -e $CONFIG ]; then
 	. $CONFIG
 else
@@ -18,6 +24,12 @@ case "$1" in
 		exit 1
 	fi
 
+	# Save LAA MAC address to config if not already present.
+	if [ -z "$MAC" ]; then
+		MAC="-m $(get_laa_mac_address)"
+		echo "MAC=\"${MAC}\"" >> $CONFIG
+	fi
+
 	echo "Starting Squeezelite"
 
 	export ALSA_CONFIG_PATH=/usr/share/alsa/alsa.conf
@@ -28,7 +40,8 @@ case "$1" in
 		$MAX_RATE $AUDIO_DEV \
 		$BUFFER $CODEC $EXCLUDE_CODEC $ALSA_PARAMS \
 		$LOG_FILE $LOG_LEVEL \
-		$UPSAMPLE $DOP $VISULIZER $SERVER_IP
+		$RESAMPLE $DOP $VISULIZER \
+		$SERVER_IP
 	
 	;;
 
