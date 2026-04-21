@@ -1,5 +1,13 @@
 #!/bin/sh
 
+export SQUEEZEPLAY_HOME=/etc/squeezeplay
+
+CONFIG=$SQUEEZEPLAY_HOME/config
+
+if [ -e $CONFIG ]; then
+	. $CONFIG
+fi
+
 case "$1" in
     start)
 	if [ -s /var/run/squeezeplay.pid ] && kill -0 $(cat /var/run/squeezeplay.pid)
@@ -12,9 +20,6 @@ case "$1" in
 
 	export SDL_NOMOUSE=1
 	export ALSA_CONFIG_PATH=/usr/share/alsa/alsa.conf
-	export SQUEEZEPLAY_HOME=/etc/squeezeplay
-	# export SQUEEZEPLAY_NOPLAYBACK=1
-	# export SQUEEZEPLAY_NOEFFECTS=1
 
 	# Add extensions on media eg SD card to lua path
 	for dir in /media/*/squeezeplay; do
