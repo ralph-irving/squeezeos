@@ -1,4 +1,4 @@
-# AUDIO_DEV="hw:CARD="
+# AUDIO_DEV="-o hw:CARD="
 ALSA_PARAMS="-a 80:4"
 OPTIONS="-W -N /etc/squeezelite/name -P /var/run/squeezelite.pid -z"
 RESAMPLE="-R -u E"
