@@ -1,7 +1,7 @@
 SUMMARY = "Lightweight headless squeezebox player for Lyrion Media Server"
 LICENSE = "GPLv3"
 
-PR = "r1609"
+PR = "r1610"
 
 DEPENDS = " \
 	flac \
