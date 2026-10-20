@@ -1,0 +1,30 @@
+From: SqueezeOS community
+Subject: [PATCH] UBIFS: use a unique backing device name per UBI volume
+
+UBIFS registers a backing device with the constant name "ubifs".
+When two distinct UBIFS volumes are mounted concurrently, registration
+of the second backing device can fail because that name already exists.
+
+Include the UBI device and volume IDs in the backing device name so
+that each mounted volume receives a distinct name.
+
+This patch is intended to be applied after
+0227-UBIFS-do-not-forget-to-register-BDI-device.patch.
+
+---
+ fs/ubifs/super.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+--- a/fs/ubifs/super.c
++++ b/fs/ubifs/super.c
+@@ -1964,7 +1964,8 @@ static int ubifs_fill_super(struct super_block *sb, void *data, int silent)
+ 	err  = bdi_init(&c->bdi);
+ 	if (err)
+ 		goto out_close;
+-	err = bdi_register(&c->bdi, NULL, "ubifs");
++	err = bdi_register(&c->bdi, NULL, "ubifs_%d_%d",
++			   c->vi.ubi_num, c->vi.vol_id);
+ 	if (err)
+ 		goto out_bdi;
+ 

@@ -785,6 +785,7 @@ ubifs/0224-UBIFS-remove-dead-code.patch
 ubifs/0225-UBIFS-allow-sync-option-in-rootflags.patch
 ubifs/0226-UBIFS-start-using-hrtimers.patch
 ubifs/0227-UBIFS-do-not-forget-to-register-BDI-device.patch
+ubifs/0228-UBIFS-allow-multiple-volume-mounts.patch
 
 # ----------------------------------------------------------------------------
 # Unionfs patches
