@@ -23,8 +23,8 @@ COMPATIBLE_MACHINE = "(fab4)"
 # to simply apply the patchset using quilt.
 do_patch() {
 # For a normal release build:
-	#cp -r ${WORKDIR}/${LINUX_ARCH}/patches ${S}
-	cp -r /home/ralphy/source/squeezeos/src/imx35/patches ${S}
+	cp -r ${WORKDIR}/${LINUX_ARCH}/patches ${S}
+	# cp -r /home/ralphy/source/squeezeos/src/imx35/patches ${S}
 	cd ${S}
 
 # Uncomment these 4 lines for oprofile-able image, and comment above 2 lines
