@@ -1,12 +1,20 @@
 #!/bin/sh
 
-PIDFILE=/var/run/squeezelite.pid
-CONFIG=/etc/squeezelite/config
+if [ ! -z $2 ]; then
+	INSTANCE="${2}"
+	LAAC="E"
+else
+	INSTANCE=""
+	LAAC="A"
+fi
+
+PIDFILE=/var/run/squeezelite${INSTANCE}.pid
+CONFIG=/etc/squeezelite/config${INSTANCE}
 
 get_laa_mac_address() {
 	# MAC address of player converted to upper case locally administered MAC address.
 	# x2:xx:xx:xx:xx:xx x6:xx:xx:xx:xx:xx xA:xx:xx:xx:xx:xx xE:xx:xx:xx:xx:xx
-	/sbin/ifconfig eth0 2>&1 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' | sed 's/[0-9A-Fa-f]:/E:/' | tr '[a-z]' '[A-Z]'
+	/sbin/ifconfig eth0 2>&1 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' | sed "s/[0-9A-Fa-f]:/${LAAC}:/" | tr '[a-z]' '[A-Z]'
 }
 
 if [ -e $CONFIG ]; then
@@ -18,7 +26,7 @@ fi
 
 case "$1" in
     start)
-	if [ -s $PIDFILE ] && /bin/kill -0 $(cat $PIDFILE)
+	if [ -s $PIDFILE ] && /bin/kill -0 $(cat $PIDFILE) > /dev/null 2>&1
 	then
 		echo "Squeezelite is already running - start"
 		exit 1
@@ -49,12 +57,12 @@ case "$1" in
 	echo -n "Stopping"
 	if [ -s $PIDFILE ]; then
 		echo " Squeezelite"
-		/bin/kill $(cat $PIDFILE)
+		/bin/kill $(cat $PIDFILE) > /dev/null 2>&1
 
 		WAIT=1
 		while true; do
 			if [ "$WAIT" -gt "3" ]; then
-				/bin/kill -TERM $(/bin/ps axw | grep -F "$PIDFILE" | grep -v grep | awk '{printf "%d", $1}')
+				/bin/kill -TERM $(/bin/ps axw | grep -F "$PIDFILE" | grep -v grep | awk '{printf "%d", $1}') > /dev/null 2>&1
 				/bin/rm "$PIDFILE"
 				echo " killed"
 				break
@@ -73,7 +81,7 @@ case "$1" in
 	;;
 
 	status)
-	if [ -s $PIDFILE ] && /bin/kill -0 $(cat $PIDFILE)
+	if [ -s $PIDFILE ] && /bin/kill -0 $(cat $PIDFILE) > /dev/null 2>&1
 	then
 		echo "Squeezelite is running - status"
 	else
